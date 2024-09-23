@@ -43,18 +43,23 @@ for(int i = 0; i < 10; i++){
 
 void VerificaMemoria(){
 do{
-     if(botaoSim == LOW){
+    if(botaoSim == LOW){
     respostasUsuario[contador] = 0;
     contador++;
     } else if (botaoNao == LOW){
     respostasUsuario[contador] = 1;
     contador++;
-    }
-     }while(contador < 10);
-            for(int i = 0;i < 10; i++){
-if
-}
-}
+    }while(contador < 10);
+        int SequenciaEstaCerta(){
+        for(int i = 0;i<10;i++){
+            if(respostasUsuario[i] == armazenaValores[i]){
+              return 1;
+              } else {
+              return 0;
+        }
+     }
+  }
+
 
 void setup() {
 //base dos inputs e outputs para conectar no arduino
