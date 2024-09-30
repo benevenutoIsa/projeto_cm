@@ -7,12 +7,7 @@ int buttonNao = 9;
 int buzzer = 2;
 
 //Músicas Tocadas
-int musicaVitoria[100]; // Definir Música
-int musicaDerrota[100]; // Definir Música
-int somAcerto; // Definir Som
 int somPulou; // Definir Som
-int somErrou; // Definir Som
-int somTempoAcabando; // Definir Som
 
 //Declaração dos Leds
 int ledVermelho = 13;
@@ -20,26 +15,91 @@ int ledVerde = 10;
 
 // Questões
 String questoesBasicas[10];
-String questoesFinais[5];
+String respostasCorretas[10];
 
+//Pergunta Final
+String questoesFinais[5];
+String respostasFinaisCorretas[5];
+
+// Jogo da Memória
 int armazenaValores[10];
 int respostasUsuarioMemoria[10];
+
+//Vida
+int vida = 1;
+
+bool Temporizador(){
+	int contador;
+  for(contador = 30; contador > 0; contador--){
+  	Serial.println(contador);
+    delay(1000);
+    if(contador <= 5){
+		tone(buzzer,440);    
+    }
+     if (digitalRead(buttonSim) == LOW || digitalRead(buttonNao) == LOW) {
+      noTone(buzzer); 
+      return true; 
+    }
+  }
+  noTone(buzzer);
+  return false;
+}
+
+void SomAcerto(int buzzer){
+	delay(1000);
+  	tone(buzzer,261);
+}
+
+void SomErro(int buzzer){
+	delay(1000);
+  	tone(buzzer,297);
+}
+
+void SomPulou(int buzzer){
+	delay(1000);
+  	tone(buzzer,495);
+}
+
+void MusicaDerrota(int buzzer){
+    delay(2000);
+    tone(buzzer, 330, 400); //MI
+  	delay(300);
+  	tone(buzzer, 349, 400); //FA
+  	delay(350);
+  	tone(buzzer, 392, 300); //SOL
+  	delay(350);
+  	tone(buzzer, 392, 300); //SOL
+  	delay(500);
+  	
+}
+
+void MusicaVitoria(int buzzer){
+    delay(2000);
+    tone(buzzer, 392, 300); //SOL
+    delay(350);
+    tone(buzzer, 392, 300); //SOL
+    delay(350);
+    tone(buzzer, 349, 400); //FA
+    delay(300);
+    tone(buzzer, 330, 400); //MI
+  	delay(500);
+}
 
 void AcendeLeds(){
 	for(int i = 0; i < 10; i++){
       	int randomNumber = random(0,2);
 		if(randomNumber == 0){
-		digitalWrite(ledVermelho, HIGH);
-		digitalWrite(ledVerde,LOW);
-		armazenaValores[i] = 0;
-        delay(500);
-        digitalWrite(ledVermelho,LOW);
+          digitalWrite(ledVermelho, HIGH);
+          digitalWrite(ledVerde,LOW);
+          armazenaValores[i] = 0;
+          delay(500);
+        	digitalWrite(ledVermelho,LOW);
 		} else {
-		digitalWrite(ledVermelho,LOW);
-		digitalWrite(ledVerde,HIGH);
-		armazenaValores[i] = 1;
-        delay(500);
-        digitalWrite(ledVerde,LOW);
+          digitalWrite(ledVermelho,LOW);
+          digitalWrite(ledVerde,HIGH);
+          armazenaValores[i] = 1;
+          delay(500);
+          digitalWrite(ledVerde,LOW);
 		}
       delay(500);
 	} 
@@ -52,12 +112,12 @@ void VerificaMemoria(){
 		if(digitalRead(buttonSim) == LOW){
 			respostasUsuarioMemoria[contador] = 0;
 			contador++;
-          Serial.println(respostasUsuarioMemoria[contador]);
-          delay(500);
+          	Serial.println(respostasUsuarioMemoria[contador]);
+          	delay(500);
 		} else if (digitalRead(buttonNao) == LOW){
 			respostasUsuarioMemoria[contador] = 1;
 			contador++;
-          delay(500);
+          	delay(500);
 		}
 	}while(contador < 10);
 }
@@ -66,115 +126,71 @@ bool SequenciaEstaCerta(){
   for(int i = 0; i<10 ;i++){
 		if(respostasUsuarioMemoria[i] != armazenaValores[i]){
 			return false;
-		} else {
-			return true;
 		}
 	}
+  return true;
 }
 
-void MusicaVitoria(int buzzer){
-	int musicaVitoria[100];
-    delay(2000);
-    tone(buzzer, 392, 300); //SOL
-    delay(350);
-    tone(buzzer, 392, 300); //SOL
-    delay(350);
-    tone(buzzer, 349, 400); //FA
-    delay(300);
-    tone(buzzer, 330, 400); //MI
-    delay(300);
-    tone(buzzer, 392, 300); //SOL
-    delay(350);
-    tone(buzzer, 392, 300); //SOL
-    delay(300);
-    tone(buzzer, 349, 400); //FA
-    delay(300);
-    tone(buzzer, 330, 400); //MI
-    delay(300);
-    tone(buzzer, 392, 300); //SOL
-    delay(300);
-    tone(buzzer, 440, 300); //LA
-    delay(350);
-    tone(buzzer, 392, 300); //SOL
-    delay(300);
-    tone(buzzer, 349, 300); //FA
-    delay(300);
-    tone(buzzer, 330, 300); //MI
-    delay(300);
-    tone(buzzer, 294, 400); //RE
-    delay(350);
-    tone(buzzer, 294, 300); //RE
-    delay(300);
-    tone(buzzer, 330, 300); //MI
-    delay(300);
-    tone(buzzer, 349, 300); //FA
-    delay(300);
-    tone(buzzer, 294, 300); //RE
-    delay(300);
-    tone(buzzer, 330, 300); //MI
-    delay(300);
-    tone(buzzer, 349, 300); //FA
-    delay(300);
-    tone(buzzer, 294, 300); //RE
-    delay(300);
-    tone(buzzer, 330, 300); //MI
-    delay(300);
-    tone(buzzer, 349, 300); //FA
-    delay(300);
-    tone(buzzer, 392, 300); //SOL
-    delay(300);
-    tone(buzzer, 440, 300); //LA
-    delay(300);
-    tone(buzzer, 392, 300); //SOL
-    delay(300);
-    tone(buzzer, 349, 300); //FA
-    delay(350);
-    tone(buzzer, 330, 300); //MI
-    delay(350);
-    tone(buzzer, 294, 400); //RE
-    delay(350);
-    tone(buzzer,262,600); //DO
-    delay(300);
-}
 
 int FasePerguntas(){
   int randomNumber;
-  	for(int i=0; i<5; i++){	
-      	String respostaUsuario;
-        randomNumber = random(0,10);
-        String pergunta = questoesBasicas[randomNumber];
-        if(buttonSim == LOW){
-            String repostaUsuario = "Sim";
-        } else if (buttonNao == LOW){
-            respostaUsuario = "Não";
-        }
+  for (int i = 0; i < 5; i++) {	
+    String respostaUsuario;
+    randomNumber = random(0, 10);
+    String pergunta = questoesBasicas[randomNumber];
+    String respostaCorreta = respostasCorretas[randomNumber]; 
+    if(Temporizador()){
+      if (digitalRead(buttonSim) == LOW) {
+        respostaUsuario = "Sim";
+      } else if (digitalRead(buttonNao) == LOW) {
+        respostaUsuario = "Não";
+      }
 
-        if(pergunta.equals(respostaUsuario)){
-              return 1;
-        }else{
-              return 0;
+      if (!respostaUsuario.equals(respostaCorreta)) {
+        vida--;
+        SomErro(buzzer);
+        if(vida<=0){
+        	MusicaDerrota(buzzer);
+          	return 0;
         }
-	}
-  	
+      } else {
+        SomAcerto(buzzer);
+      }
+    } else {
+      	vida--;
+    	SomPulou(buzzer);
+      if(vida <=0){
+      	MusicaDerrota(buzzer);
+      }
+    }
+    delay(500);  
+  }
+  return 1; 
 }
 
+
 int FasePerguntaFinal(){
-  	int randomNumber;
-  	String respostaUsuario;
-	randomNumber = random(0,5);
-  	String pergunta = questoesBasicas[randomNumber];
-  	if(buttonSim == LOW){
-    	String repostaUsuario = "Sim";
-    } else if (buttonNao == LOW){
-    	String respostaUsuario = "Não";
+  int randomNumber;
+  String respostaUsuario;
+  randomNumber = random(0, 5);
+  String pergunta = questoesFinais[randomNumber];
+  String respostaCorreta = respostasFinaisCorretas[randomNumber];
+  if(Temporizador()){
+    if (digitalRead(buttonSim) == LOW) {
+      respostaUsuario = "Sim";
+    } else if (digitalRead(buttonNao) == LOW) {
+      respostaUsuario = "Não";
     }
-  
-  if(pergunta.equals(respostaUsuario)){
-  		return 1;
-  }else{
-  		return 0;
+    if (!respostaUsuario.equals(respostaCorreta)) {
+      MusicaDerrota(buzzer);
+      return 0;  
+    } else {
+    	MusicaVitoria(buzzer);
+    }
+  } else {
+  	MusicaDerrota(buzzer);
   }
-  	
+  return 1; 
 }
 
 void setup() {
@@ -191,21 +207,29 @@ Serial.begin(9600);
 
 }
 
-void loop(){
-  if(digitalRead(buttonStart) != HIGH){
+void loop() {
+  if (digitalRead(buttonStart) == LOW) {
     delay(500);
-  	AcendeLeds();
+
+    vidas = 2;
+
+    AcendeLeds();
     VerificaMemoria();
-    bool presepada = SequenciaEstaCerta();
-    Serial.println(presepada);
-    if (presepada == true){
-    	MusicaVitoria(buzzer);
-      	int proximafase = FasePerguntas();
-      if(proximafase == 1){
-      	MusicaVitoria(buzzer);
-        int faseFinal = FasePerguntaFinal();}
-    //} else {
-      	//musica de derrota
+    
+    if (SequenciaEstaCerta()) {
+      MusicaVitoria(buzzer);
+      Serial.println("Você acertou a sequência!");
+
+      // Iniciar fase de perguntas
+      if (FasePerguntas() == 1) {
+        Serial.println("Você passou para a pergunta final.");
+        
+        // Iniciar fase final
+        FasePerguntaFinal();
+      }
+    } else {
+      MusicaDerrota(buzzer);
+      Serial.println("Você errou a sequência.");
     }
   }
 }
