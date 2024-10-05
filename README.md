@@ -17,7 +17,7 @@ Uma placa Arduino Uno para controle e processamento, um LED vermelho e um LED ve
 
   ### Segue abaixo o video do projeto funcionando:
   
-  [cases_dentro_do_jogo_funcionando](video.mp4)
+  [cases_dentro_do_jogo_funcionando](https://youtu.be/TrhOZ5ztLOI)
   #### OBS: a parte do som no tinkercad não funciona, mas quando apresentamos na aula no fisico funcionou corretamente.
 
   ### A solução que adotamos para enfrentar os desafios propostos no projeto envolveu o uso de arrays para armazenar as sequências de LEDs, as respostas do usuário sobre a sequência, além de arrays separados para perguntas e respostas. Dessa forma, conseguimos comparar as respostas com base nos índices (para as perguntas) ou na quantidade (para as sequências de LEDs). 
